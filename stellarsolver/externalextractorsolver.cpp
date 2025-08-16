@@ -8,7 +8,6 @@
 
 //Qt Includes
 #include <QTextStream>
-#include <QMessageBox>
 #include <qmath.h>
 
 //WCS Includes
@@ -447,7 +446,7 @@ int ExternalExtractorSolver::runExternalExtractor()
     QFile paramFile(paramPath);
     if (paramFile.open(QIODevice::WriteOnly) == false)
     {
-        QMessageBox::critical(nullptr, "Message", "SExtractor file write error.");
+        qCritical() << "SExtractor file write error.";
         return -1;
     }
     else
@@ -475,7 +474,7 @@ int ExternalExtractorSolver::runExternalExtractor()
     QFile convFile(convPath);
     if (convFile.open(QIODevice::WriteOnly) == false)
     {
-        QMessageBox::critical(nullptr, "Message", "SExtractor CONV filter write error.");
+        qCritical() << "SExtractor CONV filter write error.";
         return -1;
     }
     else
@@ -1061,7 +1060,7 @@ bool ExternalExtractorSolver::generateAstrometryConfigFile()
     QFile configFile(externalPaths.confPath);
     if (configFile.open(QIODevice::WriteOnly) == false)
     {
-        QMessageBox::critical(nullptr, "Message", "Config file write error.");
+        qCritical() << "Config file write error.";
         return false;
     }
     else

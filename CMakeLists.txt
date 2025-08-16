@@ -261,7 +261,6 @@ target_link_libraries(stellarsolver PUBLIC
     ${WCSLIB_LIBRARIES}
     Qt::Core
     Qt::Network
-    Qt::Widgets
     Qt::Concurrent
     )
 
