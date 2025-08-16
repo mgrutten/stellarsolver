@@ -1,19 +1,19 @@
-#include <QApplication>
+#include <QCoreApplication>
 
 //Includes for this project
 #include "structuredefinitions.h"
 #include "stellarsolver.h"
-#include "ssolverutils/fileio.h"
+#include "ssolverutils/fitsfileio.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
 #if defined(__linux__)
     setlocale(LC_NUMERIC, "C");
 #endif
     fileio fileLoader;
     fileLoader.logToSignal = false;
-    if(!fileLoader.loadImage("randomsky.fits"))
+    if(!fileLoader.loadFits("randomsky.fits"))
     {
         printf("Error in loading FITS file");
         exit(1);
