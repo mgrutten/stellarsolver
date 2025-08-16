@@ -481,6 +481,23 @@ endif(BUILD_BATCH_SOLVER)
 ## Stellar Solver Basic Demonstration Programs
 #########################################################################################
 if(BUILD_DEMOS)
+    # Create a minimal FITS loader library for GUI-free demos
+    set(MinimalFITSLoader_SRCS
+            ${CMAKE_CURRENT_SOURCE_DIR}/ssolverutils/fitsfileio.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/ssolverutils/bayer.c
+            ${CMAKE_CURRENT_SOURCE_DIR}/ssolverutils/dms.cpp
+    )
+    add_library(MinimalFITSLoaderLib STATIC ${MinimalFITSLoader_SRCS})
+    target_include_directories(MinimalFITSLoaderLib PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            ${CMAKE_CURRENT_SOURCE_DIR}/stellarsolver
+    )
+    target_link_libraries(MinimalFITSLoaderLib PUBLIC
+            ${CFITSIO_LIBRARIES}
+            Qt::Core
+            stellarsolver
+    )
+
     add_library(StellarSolverDemosLib STATIC)
     target_link_libraries(StellarSolverDemosLib PUBLIC
         stellarsolver
@@ -488,28 +505,27 @@ if(BUILD_DEMOS)
         ${CFITSIO_LIBRARIES}
         ${GSL_LIBRARIES}
         ${WCSLIB_LIBRARIES}
-        Qt::Widgets
         Qt::Core
         Qt::Network
         Qt::Concurrent
         )
 
-    add_executable(DemoStarExtract ${CMAKE_CURRENT_SOURCE_DIR}/demos/demostarextract.cpp)
-    target_link_libraries(DemoStarExtract PUBLIC StellarSolverDemosLib)
-    add_executable(DemoPlateSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demoplatesolve.cpp)
-    target_link_libraries(DemoPlateSolve PUBLIC StellarSolverDemosLib)
-    add_executable(DemoExtractSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demoextractsolve.cpp)
-    target_link_libraries(DemoExtractSolve PUBLIC StellarSolverDemosLib)
-    add_executable(DemoFITSStarExtract ${CMAKE_CURRENT_SOURCE_DIR}/demos/demofitsstarextract.cpp)
-    target_link_libraries(DemoFITSStarExtract PUBLIC StellarSolverDemosLib)
+    #add_executable(DemoStarExtract ${CMAKE_CURRENT_SOURCE_DIR}/demos/demostarextract.cpp)
+    #target_link_libraries(DemoStarExtract PUBLIC StellarSolverDemosLib)
+#    add_executable(DemoPlateSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demoplatesolve.cpp)
+#    target_link_libraries(DemoPlateSolve PUBLIC StellarSolverDemosLib)
+#    add_executable(DemoExtractSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demoextractsolve.cpp)
+#    target_link_libraries(DemoExtractSolve PUBLIC StellarSolverDemosLib)
+#    add_executable(DemoFITSStarExtract ${CMAKE_CURRENT_SOURCE_DIR}/demos/demofitsstarextract.cpp)
+#    target_link_libraries(DemoFITSStarExtract PUBLIC StellarSolverDemosLib)
     add_executable(DemoFITSPlateSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demofitsplatesolve.cpp)
-    target_link_libraries(DemoFITSPlateSolve PUBLIC StellarSolverDemosLib)
-    add_executable(DemoFITSExtractSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demofitsextractsolve.cpp)
-    target_link_libraries(DemoFITSExtractSolve PUBLIC StellarSolverDemosLib)
-    add_executable(DemoSignalsSlots ${CMAKE_CURRENT_SOURCE_DIR}/demos/demosignalsslots.cpp)
-    target_link_libraries(DemoSignalsSlots PUBLIC StellarSolverDemosLib)
-    add_executable(DemoMultipleSolves ${CMAKE_CURRENT_SOURCE_DIR}/demos/demomultiplesolves.cpp)
-    target_link_libraries(DemoMultipleSolves PUBLIC StellarSolverDemosLib)
+    target_link_libraries(DemoFITSPlateSolve PUBLIC MinimalFITSLoaderLib)
+#    add_executable(DemoFITSExtractSolve ${CMAKE_CURRENT_SOURCE_DIR}/demos/demofitsextractsolve.cpp)
+#    target_link_libraries(DemoFITSExtractSolve PUBLIC StellarSolverDemosLib)
+#    add_executable(DemoSignalsSlots ${CMAKE_CURRENT_SOURCE_DIR}/demos/demosignalsslots.cpp)
+#    target_link_libraries(DemoSignalsSlots PUBLIC StellarSolverDemosLib)
+#    add_executable(DemoMultipleSolves ${CMAKE_CURRENT_SOURCE_DIR}/demos/demomultiplesolves.cpp)
+#    target_link_libraries(DemoMultipleSolves PUBLIC StellarSolverDemosLib)
 
     file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/demos/pleiades.jpg" DESTINATION "${CMAKE_BINARY_DIR}/")
     file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/demos/randomsky.fits" DESTINATION "${CMAKE_BINARY_DIR}/")
